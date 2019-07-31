@@ -119,7 +119,7 @@ ex:
 
 	docker run --rm -ti -p 1234 --name echo-server ubuntu:14.04
 
-### Linking: Speciy that the ports is UDP (it is TCP By default) ##
+### Linking: Specify that the ports is UDP (it is TCP By default) ##
 
 	docker run --rm -ti -p 1234/UDP --name echo-server ubuntu:14.04
 
@@ -273,9 +273,11 @@ ex:
 	
 ### Process of building a docker file to create a usable image
 
-1- Create the DockerFile in the directory you are working with
-2- Make sure the docker file is called "Dockerfile"
-3- Run the below command to build the file:
+1. Create the DockerFile in the directory you are working with.
+2. Make sure the docker file is called "Dockerfile".
+3. Run the docker build command as shown below.
+
+Docker Build Command:
 
 	docker build -t [NAME_OF_IMAGE_TO_BE_SAVED] .
  ex:
