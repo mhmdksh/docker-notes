@@ -1,226 +1,234 @@
-# Note to Work with Docker
-Docker Notes:
+# Notes to Work with Docker
+## Usages
+### Run a docker image
+	docker run [IMAGE_NAME]
+ex:
 
-## Run a docker image ##
-docker run [IMAGE_NAME]
+	docker run hello_world
 
-ex: docker run hello_world
+### Run docker image with bash
 
-## Run docker image with bash ##
+	docker run -it ubuntu bash
 
-ex: docker run -it ubuntu bash
+### List all containers
 
-## List all containers ##
+	docker ps -a
 
-docker ps -a
+### List last running container
 
-## List last running container ##
+	docker ps -l
 
-docker ps -l
+ex:
+	
+	docker ps -l
+	
+		CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+		557b2005f6c6        ubuntu              "bash"              37 seconds ago      Exited (0) 11 seconds ago                       happy_chatterjee
 
-ex: docker ps -l
+### Commit a docker container, to produce a separate image (save it as a new image)
 
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
-557b2005f6c6        ubuntu              "bash"              37 seconds ago      Exited (0) 11 seconds ago                       happy_chatterjee
-
-## Commit a docker container, to produce a separate image (save it as a new image) ##
-
-docker commit [CONTAINER_NAME] [NAME_OF_IMAGE_TO_BE_SAVED]
-
-ex: docker commit happy_chatterjee my_image
-
-## Commit a docker container, to produce a separate image with a tag ##
-
-docker commit [CONTAINER_NAME] [NAME_OF_IMAGE_TO_BE_SAVED]:[TAG]
-
-ex: docker commit happy_chatterjee my_image:v2.1
-
-## Run docker image with bash and keep it running##
-
-ex: docker run -d -it ubuntu bash
-
-## List running docker containers ##
-
-docker ps
+	docker commit [CONTAINER_NAME] [NAME_OF_IMAGE_TO_BE_SAVED]
 
 ex:
 
-[root@li1488-25 ~]# docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-00169465cdaf        ubuntu              "bash"              6 minutes ago       Up 6 minutes                            loving_hugle
+	docker commit happy_chatterjee my_image
 
-## Exit a docker container, while keeping it running ##
+### Commit a docker container, to produce a separate image with a tag
 
-CTRL + p
-CTRL + q
+	docker commit [CONTAINER_NAME] [NAME_OF_IMAGE_TO_BE_SAVED]:[TAG]
 
-## Connect to a running docker container ##
+ex:
 
-docker attach [CONTAINER_NAME]
+	docker commit happy_chatterjee my_image:v2.1
 
-ex: docker attach loving_hugle
+### Run docker image with bash and keep it running
 
-## Execute a process in a running container ##
+	docker run -d -it ubuntu bash
 
-docker exec -ti [CONTAINER_NAME] [POCESS_NAME]
+### List running docker containers
 
-ex: docker exec -ti loving_hugle bash
+	docker ps
 
-## Examine the logs of a container ##
+		CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+		00169465cdaf        ubuntu              "bash"              6 minutes ago       Up 6 minutes                            loving_hugle
 
-docker logs [CONTAINER_NAME]
+### Exit a docker container, while keeping it running
 
-ex: docker logs loving_hugle
+	CTRL + p
+	CTRL + q
 
-## Remove a container ##
+### Connect to a running docker container
 
-docker rm [CONTAINER_NAME]
+	docker attach [CONTAINER_NAME]
 
-## Remove an Image ##
+ex:
+	
+	docker attach loving_hugle
 
-docker rmi [IMAGE_NAME]
+### Execute a process in a running container
 
-## list all container IDs ##
+	docker exec -ti [CONTAINER_NAME] [POCESS_NAME]
 
-docker ps -aq
+ex:
 
-## Stop all containers ##
+	docker exec -ti loving_hugle bash
 
-docker stop $(docker ps -aq)
+### Examine the logs of a container
 
-## Remove all containers ##
+	docker logs [CONTAINER_NAME]
 
-docker rm $(docker ps -aq)
+ex:
+	
+	docker logs loving_hugle
 
+### Stop a container
 
-############### Linking #################
+	docker stop [CONTAINER_NAME]
 
+### Remove a container
 
-## Linking: To make port 80 inside a container accessible from the internet on port 8080 run ##
+	docker rm [CONTAINER_NAME]
 
-docker run -p 8080:80
+### Remove an Image
 
-## Linking: Run a docker container, with ports 1234 from inside that translates to port 1234 from outside the container ##
+	docker rmi [IMAGE_NAME]
 
-docker run --rm -ti -p 1234:1234 --name echo-server ubuntu:14.04
+### list all container IDs
 
-## Linking: Run a docker container, with ports 1234 from inside that translates to any port from outside the container ##
+	docker ps -aq
 
-docker run --rm -ti -p 1234 --name echo-server ubuntu:14.04
+### Stop all containers
 
-## Linking: Speciy that the ports is UDP (it is TCP By default) ##
+	docker stop $(docker ps -aq)
 
-docker run --rm -ti -p 1234/UDP --name echo-server ubuntu:14.04
+### Remove all containers
 
-## Linking: Link a docker container to another docker running as a server ##
+	docker rm $(docker ps -aq)
 
-docker run --rm -ti --link [SERVER_Container_Name] --name client ubuntu:14.04
+## Linking
 
-ex: docker run --rm -ti --link server --name client ubuntu:14.04
+### Linking: To make port 80 inside a container accessible from the internet on port 8080 run ##
 
+	docker run -p 8080:80
 
-############### Networking #################
+### Linking: Run a docker container, with ports 1234 from inside that translates to port 1234 from outside the container ##
 
+	docker run --rm -ti -p 1234:1234 --name echo-server ubuntu:14.04
 
-## Networking: Create a docker network ##
+### Linking: Run a docker container, with ports 1234 from inside that translates to any port from outside the container ##
 
-docker network create [Network_Name]
+	docker run --rm -ti -p 1234 --name echo-server ubuntu:14.04
 
-ex: docker network create private
+### Linking: Speciy that the ports is UDP (it is TCP By default) ##
 
-## Networking: Link a docker container to a created network ##
+	docker run --rm -ti -p 1234/UDP --name echo-server ubuntu:14.04
 
-docker run --rm -ti --net=[NETWORK_NAME] --name [CONTAINER_NAME] ubuntu:14.04 bash
+### Linking: Link a docker container to another docker running as a server ##
 
-ex: docker run --rm -ti --net=private --name server ubuntu:14.04 bash
+	docker run --rm -ti --link [SERVER_Container_Name] --name client ubuntu:14.04
 
-## Networking: Link a docker container client to a contaner server and connect it to the same network used by the server ##
+ex:
 
-docker run --rm -ti --link server --net=private --name client ubuntu:14.04 bash
+	docker run --rm -ti --link server --name client ubuntu:14.04
 
-## Networking: Remove network protection between the docker containers and the host machine ##
+## Networking
+### Networking: Create a docker network
 
-docker run --rm -ti --net=host options image-name command
+	docker network create [Network_Name]
 
-ex:  docker run --rm -ti --net=host ubuntu bash
+ex:
 
+	docker network create private
 
-############### Volumes #################
+### Networking: Link a docker container to a created network
 
+	docker run --rm -ti --net=[NETWORK_NAME] --name [CONTAINER_NAME] ubuntu:14.04 bash
 
-## Volumes: Share a folder from host machine to a folder inside the docker container ##
+ex:
 
-docker run --rm -ti -v [HOST_MACHINE_DIR]:[CONTAINER_SHARED_DIR] ubuntu:14.04 bash
+	docker run --rm -ti --net=private --name server ubuntu:14.04 bash
 
-ex: docker run -ti -v /root/docker_shared/:/root/docker_shared ubuntu:14.04 bash
+### Networking: Link a docker container client to a contaner server and connect it to the same network used by the server
 
-## Volumes: Create a volume that is not shared with the host ##
+	docker run --rm -ti --link server --net=private --name client ubuntu:14.04 bash
 
-docker run -ti -v [DIR_of_Non_Shared_Volume] ubuntu:14.04 bash
+### Networking: Remove network protection between the docker containers and the host machine
 
-ex: docker run -ti -v /root/docker_shared/ ubuntu:14.04 bash
+	docker run --rm -ti --net=host options image-name command
+ex:
+	
+	docker run --rm -ti --net=host ubuntu bash
 
-## Volumes: Run a docker container that is connected to an already existing shared volume ##
+## Volumes
+### Volumes: Share a folder from host machine to a folder inside the docker container ##
 
-docker run -ti --volumes-from [CONTAINER_NAME] ubuntu:14.04 bash
+	docker run --rm -ti -v [HOST_MACHINE_DIR]:[CONTAINER_SHARED_DIR] ubuntu:14.04 bash
+ex:
+	
+	docker run -ti -v /root/docker_shared/:/root/docker_shared ubuntu:14.04 bash
 
-ex: docker run -ti --volumes-from priceless_almeida ubuntu:14.04 bash
+### Volumes: Create a volume that is not shared with the host ##
 
+	docker run -ti -v [DIR_of_Non_Shared_Volume] ubuntu:14.04 bash
+ex:
 
-############### Docker_Files #################
+	docker run -ti -v /root/docker_shared/ ubuntu:14.04 bash
 
+### Volumes: Run a docker container that is connected to an already existing shared volume ##
 
+	docker run -ti --volumes-from [CONTAINER_NAME] ubuntu:14.04 bash
+ex:
 
+	docker run -ti --volumes-from priceless_almeida ubuntu:14.04 bash
 
-
-
-
-
+## Docker_Files (Used to build Docker Images)
 
 SYNTAX:
 
+Start from a specific docker image (Should always start with it in the beggining of the Dockerfile)
+Also can start from more than one image, (Which will result in creating more than one image)
 
-## Start from a specific docker image (Should always start with it in the beggining of the Dockerfile) ##
-## Also can start from more than one image, (Which will result in creating more than one image)        ##
+	FROM [STARTING_IMAGE_NAME]
 
-FROM [STARTING_IMAGE_NAME]
+### Make the auther of the dockerfile for documentation purpose
 
-## Make the auther of the dockerfile for documentation purpose ##
+	MAINTAINER [FIRSTNAME] [LASTNAME] <[email.address@domain.com]>
 
-MAINTAINER [FIRSTNAME] [LASTNAME] <[email.address@domain.com]>
+### Running commands in the containers created and save them within teh dockerfile build
 
-## Running commands in the containers created and save them within teh dockerfile build ##
+	RUN [SHELL_COMMAND] [/DIRECTORY/IN/CONTAINER]
 
-RUN [SHELL_COMMAND] [/DIRECTORY/IN/CONTAINER]
+ex:
 
-ex: RUN unzip install.zip /opt/install
+	RUN unzip install.zip /opt/install
 
-## Add files, extract files, download and send files, from host machines into images ##
+### Add files, extract files, download and send files, from host machines into images
 
-ADD [HOST_FILE] [IMAGE_FILE]
+	ADD [HOST_FILE] [IMAGE_FILE]
 
-ex: ADD run.sh /run.sh
+ex:
+	
+	ADD run.sh /run.sh
 
 	ADD project.tar.gz /install/
 	
 	ADD https://project.example.com/downloads/big-file-from-the-internet.rpm /project/
 	
-## Set environment variable, during the run of the Dockerfile, and after the image is created ##
+### Set environment variable, during the run of the Dockerfile, and after the image is created
 
-ENV [VARIABLE]=[SOME_VALUE]
+	ENV [VARIABLE]=[SOME_VALUE]
 
-ex: ENV DB_HOST=db.production.example.com
+ex:
+
+	ENV DB_HOST=db.production.example.com
 	
 	ENV DB_PORT=3306
 	
-NOTE: 	
+NOTE:
 
-	##################################################################################	
-	## Unlike the RUN Command, the ENTRYPOINT & CMD Commands are commands that      ##
-	## makes the built images, run a command after it finished creation and started ##
-	##################################################################################
+Unlike the RUN Command, the ENTRYPOINT & CMD Commands are commands that makes the built images, run a command after it finished creation and started
 
-## ENTRYPOINT & CMD forms of execution ##
+### ENTRYPOINT & CMD forms of execution
 
 Shell Form:
 
@@ -230,60 +238,62 @@ Exec Form:
 
 	CMD ["/bin/nano", "/notes.txt"]
 	
-## Expose network ports on the created container ##
+### Expose network ports on the created container
 
-EXPOSE [PORT_NUMBER]
+	EXPOSE [PORT_NUMBER]
 
-ex: Expose 8080
+ex:
 
-## Define Volumes [Directories] to be shared with container image ##
+	Expose 8080
+	
+### Define Volumes [Directories] to be shared with container image
 
-VOLUME ["/host/path" "/container/path"]
-VOLUME ["shared-data"]
+	VOLUME ["/host/path" "/container/path"]
+	VOLUME ["shared-data"]
 
-	  ########################################################################################
-NOTE: ### Avoid defining shared folders in docker files since, this will mean all the data ###
-      ### that resides is only going to be usefull if you use it on the same host manchine ###
-	  ########################################################################################
+NOTE:
+Avoid defining shared folders in docker files since, this will mean all the datathat resides is only going to be usefull if you use it on the same host manchine
 	  
-## Set the working directory of the container that is starts in ##
+### Set the working directory of the container that is starts in
 
-WORKDIR [DIR]
+	WORKDIR [DIR]
 
-ex: WORKDIR /install/
+ex:
 
-## Set which user the container will run as ##
+	WORKDIR /install/
 
-USER [USERNAME]
+### Set which user the container will run as
 
-ex: USER alex
+	USER [USERNAME]
+
+ex:
+
+	USER alex
 	USER 1000
 	
-	
-	
-## Process of building a docker file to create a usable image ##
+### Process of building a docker file to create a usable image
 
 1- Create the DockerFile in the directory you are working with
 2- Make sure the docker file is called "Dockerfile"
 3- Run the below command to build the file:
 
 	docker build -t [NAME_OF_IMAGE_TO_BE_SAVED] .
-
  ex:
-	
+
 	docker build -t new-ubuntu .
 	
+### Save Docker Image to a comppressed file
+
+	docker save -o [TAR_GZ_COMPRESSED_FILE] [IMAGE1] [IMAGE2] ....
+
+ex:
 	
-	###############################################################################################	
-	
-## Save Docker Image to a comppressed file ##
+	docker save -o ubuntu_images.tar.gz ubuntu:12.04 ubuntu:14.04 ubuntu:16.04
 
-docker save -o [TAR_GZ_COMPRESSED_FILE] [IMAGE1] [IMAGE2] ....
+### Load saved docker images from compressed file
 
-ex: docker save -o ubuntu_images.tar.gz ubuntu:12.04 ubuntu:14.04 ubuntu:16.04
+	docker load -i [TAR_GZ_COMPRESSED_FILE]
 
-## Load saved docker images from compressed file ##
+ex:
 
-docker load -i [TAR_GZ_COMPRESSED_FILE]
-
-ex: docker load -i ubuntu_images.tar.gz
+	docker load -i ubuntu_images.tar.gz
